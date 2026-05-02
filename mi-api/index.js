@@ -1,40 +1,40 @@
-const express = require('express');
-const app = express();
-app.use(express.static('public'));
+const express = require('express')
+const { PrismaClient } = require('@prisma/client')
+const { startGoldFetcher } = require('./jobs/goldFetcher.js')
+
+const app = express()
+const prisma = new PrismaClient()
+
+app.use(express.static('public'))
+
+startGoldFetcher()
 
 app.get('/gold', async (req, res) => {
   try {
-    const response = await fetch('https://west.albion-online-data.com/api/v2/stats/gold.json?count=60');
-    const data = await response.json();
+    const twelveHoursAgo = new Date(Date.now() - 12 * 60 * 60 * 1000)
 
-    res.json(data);
+    const data = await prisma.gold_Price.findMany({
+      where: {
+        timestamp: {
+          gte: twelveHoursAgo
+        }
+      },
+      orderBy: { timestamp: 'desc' }
+    })
+
+    // Convertir BigInt a string para poder enviarlo en JSON
+    const serializedData = data.map(d => ({
+      ...d,
+      id: d.id.toString()
+    }))
+
+    res.json(serializedData)
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error obteniendo datos' });
+    console.error("EXACT ERROR:", error)
+    res.status(500).json({ error: 'Error obteniendo datos', details: error.message, stack: error.stack })
   }
-});
-let historial = [];
-async function guardarPrecio() {
-  try {
-    const response = await fetch('https://west.albion-online-data.com/api/v2/stats/gold.json?count=1');
-    const data = await response.json();
-
-    const precio = data[0];
-
-    historial.push(precio);
-
-    console.log("Guardado:", precio.price);
-
-  } catch (error) {
-    console.error("Error guardando:", error);
-  }
-}
-setInterval(guardarPrecio, 60000);
-
-app.get('/history', (req, res) => {
-  res.json(historial);
-});
+})
 
 app.listen(3000, () => {
-  console.log('Servidor en http://localhost:3000');
-});
+  console.log('Servidor en http://localhost:3000')
+})
