@@ -4,7 +4,7 @@ app.use(express.static('public'));
 
 app.get('/gold', async (req, res) => {
   try {
-    const response = await fetch('https://west.albion-online-data.com/api/v2/stats/gold.json?count=5');
+    const response = await fetch('https://west.albion-online-data.com/api/v2/stats/gold.json?count=10');
     const data = await response.json();
 
     res.json(data);
@@ -29,7 +29,7 @@ async function guardarPrecio() {
     console.error("Error guardando:", error);
   }
 }
-setInterval(guardarPrecio, 2500);
+setInterval(guardarPrecio, 60000);
 
 app.get('/history', (req, res) => {
   res.json(historial);

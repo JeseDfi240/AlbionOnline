@@ -1,3 +1,5 @@
+let miGrafica;
+
 async function cargarDatos() {
   try {
     const res = await fetch('/gold');
@@ -8,12 +10,16 @@ async function cargarDatos() {
       return;
     }
 
-    const precios = data.map(d => d.price);
-    const fechas = data.map(d => new Date(d.timestamp).toLocaleTimeString());
+    const precios = data.map(d => d.price).reverse();
+    const fechas = data.map(d => new Date(d.timestamp).toLocaleString('es-ES', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })).reverse();
 
     const ctx = document.getElementById('chart').getContext('2d');
 
-    new Chart(ctx, {
+    if (miGrafica) {
+      miGrafica.destroy();
+    }
+
+    miGrafica = new Chart(ctx, {
       type: 'line',
       data: {
         labels: fechas,
@@ -29,5 +35,8 @@ async function cargarDatos() {
     console.error(error);
   }
 }
+
+
+document.getElementById('btnActualizar').addEventListener('click', cargarDatos);
 
 cargarDatos();
