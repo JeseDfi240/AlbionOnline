@@ -4,7 +4,7 @@ app.use(express.static('public'));
 
 app.get('/gold', async (req, res) => {
   try {
-    const response = await fetch('https://west.albion-online-data.com/api/v2/stats/gold.json?count=10');
+    const response = await fetch('https://west.albion-online-data.com/api/v2/stats/gold.json?count=60');
     const data = await response.json();
 
     res.json(data);
