@@ -1,0 +1,4 @@
+-- Crea la base de datos desde tu workbench.
+-- Cambia los datos de "db/connection.js" por los de tu DB.
+-- Haz una migracion desde VS code con el comando "npx prisma migrate dev --name nombre_de_tu_migracion".
+-- Ya se comenzaran a guardar los datos.
