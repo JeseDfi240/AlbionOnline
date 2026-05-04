@@ -11,7 +11,12 @@ startGoldFetcher()
 
 app.get('/gold', async (req, res) => {
   try {
+<<<<<<< HEAD
     const twelveHoursAgo = new Date(Date.now() - 12 * 60 * 60 * 1000)
+=======
+    const response = await fetch('https://west.albion-online-data.com/api/v2/stats/gold.json?count=120');
+    const data = await response.json();
+>>>>>>> 1b0896deeaa47397d833a2afadbbe3ea8899e88f
 
     const data = await prisma.gold_Price.findMany({
       where: {
