@@ -3,31 +3,16 @@
 
 <head>
   <title>Gráfica Oro</title>
-  <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
-  <style>
-    #container {
-      width: 100%;
-      height: 400px;
-    }
-  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
 </head>
 
 <body>
 
-  <h1>Precio del Oro 📈</h1><br>
+  <h1>Precio del Oro 📈</h1>
 
-  <h2>Precio de compra y venta</h2>
+  <canvas id="chart"></canvas>
 
-  <div style="display: flex; align-items: center; justify-content: center;">
-    <p id="compra"
-      style="background-color: #2962FF; color: white; padding: 10px; margin-left: 10px; display: inline-block;">
-      Compra</p>
-    <p id="venta"
-      style="background-color: #16a900ff; color: white; padding: 10px; margin-left: 10px; display: inline-block;">
-      Venta</p>
-  </div>
-
-  <div id="container"></div>
+  <button id="btnActualizar">Actualizar Gráfica</button>
 
   <script src="script.js"></script>
 
